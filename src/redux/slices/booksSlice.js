@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { popularBooks } from "../../utils/constants";
+import { books } from "../../utils/constants";
 
 const initialState = {
-  popularBooks: popularBooks,
-  myBooks: popularBooks,
+  myBooks: books,
 };
 
 export const booksSlice = createSlice({

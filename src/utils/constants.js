@@ -1,34 +1,44 @@
+// List of book categories
 export const categories = [
-  { id: 1, name: "Fiction", path: "fiction" },
-  { id: 2, name: "Non-Fiction", path: "non-fiction" },
-  { id: 3, name: "Science Fiction", path: "sci-fi" },
-  { id: 4, name: "Mystery", path: "mystery" },
-  { id: 5, name: "Biography", path: "biography" },
+  "fiction",
+  "non-fiction",
+  "sci-fi",
+  "mystery",
+  "horror",
 ];
 
-export const popularBooks = [
+// List of all books (if you need to access all books for details or searching)
+export const books = [
   {
-    id: 1,
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
-    category: "Fiction",
+    category: "fiction",
+    description: "A novel about the American dream.",
+    id: "kjwgfbawljibva;wqv;r",
+    rating: 6,
   },
   {
-    id: 2,
-    title: "Dune",
-    author: "Frank Herbert",
-    category: "Science Fiction",
+    title: "1984",
+    author: "George Orwell",
+    category: "mystery",
+    description: "A novel about a totalitarian society.",
+    id: "hjsdvfjhkdsvbfjkslnfcwl",
+    rating: 8,
   },
   {
-    id: 3,
-    title: "Sapiens",
-    author: "Yuval Noah Harari",
-    category: "Non-Fiction",
+    title: "To Kill a Mockingbird",
+    author: "Harper Lee",
+    category: "fiction",
+    description: "A novel about racial injustice.",
+    id: "jhsfjkhdsgfkjdwghf",
+    rating: "9",
   },
   {
-    id: 4,
-    title: "The Da Vinci Code",
-    author: "Dan Brown",
-    category: "Mystery",
+    title: "A Brief History of Time",
+    author: "Stephen Hawking",
+    category: "sci-fi",
+    description: "A book about cosmology and the universe.",
+    id: "jhgsfkjghsdfh",
+    rating: 10,
   },
 ];

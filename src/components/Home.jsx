@@ -1,79 +1,43 @@
-import React from "react";
+import { useSelector } from "react-redux";
+import "../components/Home.css";
 import { Link } from "react-router-dom";
-
-const categories = [
-  { id: 1, name: "Fiction", path: "fiction" },
-  { id: 2, name: "Non-Fiction", path: "non-fiction" },
-  { id: 3, name: "Science Fiction", path: "sci-fi" },
-  { id: 4, name: "Mystery", path: "mystery" },
-  { id: 5, name: "Biography", path: "biography" },
-];
-
-const popularBooks = [
-  {
-    id: 1,
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    category: "Fiction",
-  },
-  {
-    id: 2,
-    title: "Dune",
-    author: "Frank Herbert",
-    category: "Science Fiction",
-  },
-  {
-    id: 3,
-    title: "Sapiens",
-    author: "Yuval Noah Harari",
-    category: "Non-Fiction",
-  },
-  {
-    id: 4,
-    title: "The Da Vinci Code",
-    author: "Dan Brown",
-    category: "Mystery",
-  },
-];
+import { categories } from "../utils/constants";
+import "./Home.css";
 
 const Home = () => {
+  const myBooks = useSelector((state) => state.books.myBooks);
+  const popularBooks = myBooks.filter((book) => book.rating >= 8);
+
   return (
     <div className="home-container">
-      <header className="hero-section">
-        <h1>Welcome to Our Online Library</h1>
-        <p>Discover thousands of books at your fingertips</p>
-      </header>
+      <h1 className="welcome-title">Welcome to my Online Library</h1>
 
-      <section className="categories-section">
-        <h2>Browse by Category</h2>
-
-        <div className="categories-grid">
+      <div className="categories-section">
+        <h3>Categories</h3>
+        <div className="categories-container">
           {categories.map((category) => (
-            <Link
-              to={`/category/${category.path}`}
-              key={category.id}
-              className="category-card"
-            >
-              {category.name}
-            </Link>
+            <span key={category} className="category">
+              {category}
+            </span>
           ))}
         </div>
-      </section>
-
-      <section className="popular-books-section">
-        <h2>Popular Books</h2>
-
-        <div className="books-grid">
+      </div>
+      <div>
+        <h3>Popular Books</h3>
+        <div className="popular-books-grid">
           {popularBooks.map((book) => (
             <div key={book.id} className="book-card">
-              <img src={book.imageUrl} alt={book.title} />
-              <h3>{book.title}</h3>
-              <p>by {book.author}</p>
-              <span className="category-tag">{book.category}</span>
+              <h2 className="book-title">{book.title}</h2>
+              <p className="book-category">{book.category}</p>
+              <p className="book-author">{book.author}</p>
+              <p className="book-description">{book.description}</p>
+              <Link to={`/books/${book.id}`} className="view-details-link">
+                View more Details
+              </Link>
             </div>
           ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 };

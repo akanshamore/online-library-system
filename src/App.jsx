@@ -1,22 +1,25 @@
 import React from "react";
 import "./App.css";
-import Home from "./components/Home";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import { AddBook } from "./components/AddBook";
-import { BrowseBooks } from "./components/BrowseBooks";
+import BrowseBooks from "./components/BrowseBooks.jsx";
+import Home from "./components/Home.jsx";
+import NotFound from "./components/NotFound.jsx";
+import { AddBook } from "./components/AddBook.jsx";
+
+import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import BookDetails from "./components/BookDetails.jsx";
+import { NavBar } from "./components/NavBar.jsx";
 
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/add-book" element={<AddBook />} />
         <Route path="/browse" element={<BrowseBooks />} />
-        {/* <Route path="/books" element={<BrowseBooks />} /> */}
-        <Route path="/browse/:path" element={<BrowseBooks />} />
-        {/* <Route path="/book/:id" element={<BookDetails />} /> */}
+        <Route path="/browse/:category" element={<BrowseBooks />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/add-book" element={<AddBook />} />
+        <Route path="/books/:id" element={<BookDetails />} />
       </Routes>
     </BrowserRouter>
   );

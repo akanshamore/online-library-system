@@ -1,59 +1,78 @@
 import { useSelector } from "react-redux";
 import { categories } from "../utils/constants";
 import { Link, useParams } from "react-router-dom";
+import "./BrowseBooks.css";
 import { useState } from "react";
 
-export const BrowseBooks = () => {
-  const { path } = useParams();
-  console.log("path is", path);
-  const category = categories.find((cat) => cat.path === path).name;
-  console.log(category);
+const BrowseBooks = () => {
+  const { category } = useParams();
+
   const myBooks = useSelector((state) => state.books.myBooks);
-  const [searchTerm, setSearchTerm] = useState("");
-  console.log(myBooks);
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearchText = (e) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchText("");
+  };
 
   // Filter books by category and search term
   const filteredBooks = myBooks.filter((book) => {
     const matchesCategory = category ? book.category === category : true;
     const matchesSearch =
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase());
+      book.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      book.author.toLowerCase().includes(searchText.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  console.log("filteredBooks", filteredBooks);
-
   return (
-    <div className="browse-books-container">
-      <h2>Browse Books</h2>
+    <div className="browse-container">
+      <h1 className="browse-title">Browse Books</h1>
+      <div className="filters-container">
+        <div className="search-container">
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Search by title or author..."
+            onChange={(e) => handleSearchText(e)}
+            value={searchText}
+          />
+          <button className="clear-button" onClick={handleClearSearch}>
+            Clear
+          </button>
+        </div>
 
-      {/* Categories Navigation */}
-      <div className="categories-nav">
-        <Link to="/browse">All Books</Link>
-        {categories.map((cat) => (
-          <Link key={cat.id} to={`/browse/${cat.path}`}>
-            {cat.name}
-          </Link>
-        ))}
+        <div className="categories-section">
+          <h2 className="categories-title">Categories</h2>
+          <div className="categories-list">
+            <Link
+              to="/browse"
+              className={`category-tag ${!category ? "active" : ""}`}
+            >
+              All
+            </Link>
+            {categories.map((cat) => (
+              <Link
+                to={`/browse/${cat}`}
+                className={`category-tag ${category === cat ? "active" : ""}`}
+                key={cat}
+              >
+                {cat}
+              </Link>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Search Bar */}
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search by title or author..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-      {/* Books Grid */}
       <div className="books-grid">
         {filteredBooks.map((book) => (
-          <div key={book.id} className="book-card">
-            <h3>{book.title}</h3>
-            <p>{book.author}</p>
-            <Link to={`/book/${book.id}`} className="view-details-btn">
-              View Details
+          <div className="book-card" key={book.id}>
+            <h3 className="book-title">{book.title}</h3>
+            <p className="book-author">{book.author}</p>
+            <Link to={`/books/${book.id}`} className="view-more-link">
+              View More
             </Link>
           </div>
         ))}
@@ -61,3 +80,5 @@ export const BrowseBooks = () => {
     </div>
   );
 };
+
+export default BrowseBooks;

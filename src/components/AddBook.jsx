@@ -3,22 +3,24 @@ import "./AddBook.css";
 import { categories } from "../utils/constants";
 import { addBook } from "../redux/slices/booksSlice";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 export const AddBook = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+
+  const [bookDetails, setBookDetails] = useState({
+    id: "",
     title: "",
     author: "",
     description: "",
     rating: "",
-    category: categories[0].name,
+    category: categories[0],
   });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setBookDetails((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -26,12 +28,12 @@ export const AddBook = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.author.trim()) newErrors.author = "Author is required";
-    if (!formData.description.trim())
+    if (!bookDetails.title.trim()) newErrors.title = "Title is required";
+    if (!bookDetails.author.trim()) newErrors.author = "Author is required";
+    if (!bookDetails.description.trim())
       newErrors.description = "Description is required";
 
-    if (!formData.rating.trim()) newErrors.rating = "Rating is required";
+    if (!bookDetails.rating.trim()) newErrors.rating = "Rating is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -39,12 +41,10 @@ export const AddBook = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (validateForm()) {
       const newBook = {
-        ...formData,
+        ...bookDetails,
         id: Date.now(),
-        addedDate: new Date().toISOString(),
       };
       dispatch(addBook(newBook));
       navigate("/browse");
@@ -58,8 +58,9 @@ export const AddBook = () => {
           <label>Title</label>
           <input
             type="text"
+            placeholder="Enter Title"
             name="title"
-            value={formData.title}
+            value={bookDetails.title}
             onChange={handleChange}
             className={errors.title ? "error" : ""}
           />
@@ -71,8 +72,9 @@ export const AddBook = () => {
           <label>Author</label>
           <input
             type="text"
+            placeholder="Enter Author"
             name="author"
-            value={formData.author}
+            value={bookDetails.author}
             onChange={handleChange}
             className={errors.author ? "error" : ""}
           />
@@ -80,27 +82,39 @@ export const AddBook = () => {
             <span className="error-message">{errors.author}</span>
           )}
         </div>
-
         <div className="form-group">
           <label>Category</label>
           <select
             name="category"
-            value={formData.category}
+            value={bookDetails.category}
             onChange={handleChange}
           >
             {categories.map((category) => (
-              <option key={category.id} value={category.name}>
-                {category.name}
+              <option key={category} value={category}>
+                {category}
               </option>
             ))}
           </select>
+        </div>
+        <div className="form-group">
+          <label>Rating</label>
+          <input
+            type="text"
+            placeholder=" Enter Rating"
+            name="rating"
+            onChange={handleChange}
+            className={errors.rating ? "error" : ""}
+          />
+          {errors.rating && (
+            <span className="error-message">{errors.rating}</span>
+          )}
         </div>
 
         <div className="form-group">
           <label>Description</label>
           <textarea
             name="description"
-            value={formData.description}
+            value={bookDetails.description}
             onChange={handleChange}
             className={errors.description ? "error" : ""}
           />
@@ -109,19 +123,6 @@ export const AddBook = () => {
           )}
         </div>
 
-        <div className="form-group">
-          <label>Rating</label>
-          <input
-            type="text"
-            name="rating"
-            value={formData.rating}
-            onChange={handleChange}
-            className={errors.rating ? "error" : ""}
-          />
-          {errors.rating && (
-            <span className="error-message">{errors.rating}</span>
-          )}
-        </div>
         <button type="submit" className="submit-button">
           Add Book
         </button>
